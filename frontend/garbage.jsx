@@ -134,15 +134,15 @@ const categories = [
   "Kitchen Essentials",
   "Pantry",
 ];
-export function App() {
+const Page = ()=>{
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [favorites, setFavorites] = useState<number[]>([]);
+  const [favorites, setFavorites] = useState([]);
   const filteredProducts =
     selectedCategory === "All"
       ? products
       : products.filter((product) => product.category === selectedCategory);
-  const toggleFavorite = (productId: number) => {
+  const toggleFavorite = (productId) => {
     setFavorites((prev) =>
       prev.includes(productId)
         ? prev.filter((id) => id !== productId)
@@ -386,3 +386,5 @@ export function App() {
     </div>
   );
 }
+export default Page;
+
