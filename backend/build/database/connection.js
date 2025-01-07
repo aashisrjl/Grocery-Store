@@ -8,7 +8,7 @@ const sequelize = new sequelize_typescript_1.Sequelize({
     password: process.env.DB_PASSWORD || '',
     host: process.env.DB_HOST || 'localhost',
     port: Number(process.env.DB_PORT) || 3306,
-    models: [__dirname + '../models'],
+    models: [__dirname + '/models'],
 });
 sequelize.authenticate()
     .then(() => {

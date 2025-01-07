@@ -47,6 +47,8 @@ require("./database/connection");
 app.get("/", (req, res) => {
     res.send("Hello World");
 });
+const userRoute = require("./routes/userRoute");
+app.use("/", userRoute);
 app.listen(port, () => {
     console.log("server is running on port:" + port);
 });

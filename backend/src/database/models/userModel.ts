@@ -45,6 +45,16 @@ class User extends Model{
 
     })
     declare password:string;
+
+    @Column({
+        type: DataType.STRING
+    })
+    declare googleId:string;
+
+    @Column({
+        type: DataType.STRING
+    })
+    declare otp:number;
 }
 
 export default User;
