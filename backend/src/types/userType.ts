@@ -7,3 +7,4 @@ export interface UserType{
     googleId: string,
     otp: string
 }
+

@@ -6,13 +6,13 @@ export class CategoryController{
     categoryData=[
         {
 
-            categoryName: "Electronics"
+            categoryName: "Fruits & Vegetables"
         },{
-            categoryName: "Fashion"
+            categoryName: "Dairy & Eggs"
         },{
-            categoryName: "Home and Kitchen"
+            categoryName: "Kitchen Essentials"
         },{
-            categoryName: "Sports"
+            categoryName: "Bakery"
         }
       
     ];

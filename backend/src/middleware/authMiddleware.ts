@@ -2,24 +2,12 @@
 import {NextFunction, Request,Response} from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../database/models/userModel';
+import { AuthRequest, Role } from '../types/authRequest';
 
-export interface AuthRequest extends Request{
-    user?:{
-        username: String,
-        email: String,
-        role: String,
-        password: String,
-        id: String,
-       
-    }
-}
-export enum Role{
-    Admin = 'admin',
-    Customer = 'customer'
-}
+
 
 class authMiddleware {
-    async isAuthenticated(req:AuthRequest,res:Response,next:NextFunction):Promise<void>{
+    async isAuthenticated(req:any,res:Response,next:NextFunction):Promise<void>{
         // get token from user
         const token = req.headers.authorization;
         if(!token || token === undefined || token === null){
@@ -29,7 +17,7 @@ class authMiddleware {
             return;
         }
         //verify token
-        jwt.verify(token,process.env.JWT_SECRET as string,async(err,decoded:any)=>{
+        jwt.verify(token,process.env.JWT_SECRET as string,async(err:any,decoded:any)=>{
             if(err){
                 res.status(403).json({
                     message:"token not valid"
@@ -44,7 +32,15 @@ class authMiddleware {
                     })
                     return;
                }
-               req.user = userData;
+               req.user= {
+                id: userData.id,
+                username: userData.username,
+                email: userData.email,
+                role: userData.role,
+                password: userData.password,
+                googleId: userData.googleId,
+                otp: userData.otp,
+            };
                next()
                 
              } catch (error) {

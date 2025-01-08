@@ -1,12 +1,14 @@
-import { Request, Response} from 'express';
-const errorHandler = (fn:Function)=>{
-    return (req:Request,res:Response)=>{
-        fn(req,res).catch((err:Error)=>{
+import { Request, Response, NextFunction } from 'express';
+
+const errorHandler = (fn: (req: Request, res: Response, next: NextFunction) => Promise<void>) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+        Promise.resolve(fn(req, res, next)).catch((err: Error) => {
             res.status(500).json({
-                message:"internal/server error",
-                error:err.message
-            })
-        })
-}
-}
+                message: "Internal Server Error",
+                error: err.message,
+            });
+        });
+    };
+};
+
 export default errorHandler;
