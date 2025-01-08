@@ -1,14 +1,15 @@
 import {request,Response} from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 import User from '../database/models/userModel';
-import UserType from '../types/userType';
+import { UserType } from '../types/userType';
+
 
 class AuthController{
 
     //regsiter
     public static async registerUser(req:Request,res:Response):Promise<void>{
-        const { username,role,email,password}:UserType = req.body
+        const { username,role,email,password }:any = req.body
         if(!username || !email || !password ){
             res.status(400).json({
                 message: "please provide username,email,passsword"
@@ -29,7 +30,9 @@ class AuthController{
     //login
 
     public static async LoginUser(req:Request,res:Response):Promise<void>{
-        const {email,password} = req.body
+        const {email,password}:any = req.body
 
     }
 }
+
+export default new AuthController();
