@@ -10,10 +10,10 @@ router.route("/register").post(errorHandler(UserController.registerUser));
 router.route("/login").post(errorHandler(UserController.loginUser));
 
 // Google OAuth Login
-router.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+router.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"],session:false }));
 
 // Google OAuth Callback
-router.get("/auth/google/callback", passport.authenticate("google", { failureRedirect: "/" }), UserController.googleCallback);
+router.get("/auth/google/callback", passport.authenticate("google", { failureRedirect: "/", session:false }), UserController.googleCallback);
 
 export default router;
 

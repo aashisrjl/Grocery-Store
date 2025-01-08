@@ -12,14 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Role = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const userModel_1 = __importDefault(require("../database/models/userModel"));
-var Role;
-(function (Role) {
-    Role["Admin"] = "admin";
-    Role["Customer"] = "customer";
-})(Role || (exports.Role = Role = {}));
 class authMiddleware {
     isAuthenticated(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -48,7 +42,15 @@ class authMiddleware {
                             });
                             return;
                         }
-                        req.user = userData;
+                        req.user = {
+                            id: userData.id,
+                            username: userData.username,
+                            email: userData.email,
+                            role: userData.role,
+                            password: userData.password,
+                            googleId: userData.googleId,
+                            otp: userData.otp,
+                        };
                         next();
                     }
                     catch (error) {

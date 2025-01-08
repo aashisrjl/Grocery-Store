@@ -8,9 +8,12 @@ dotenv_1.default.config();
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
 const port = Number(process.env.SERVER_PORT || 3000);
+const cookieParser = require('cookie-parser');
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
-console.log("serverport", process.env.SERVER_PORT);
+app.use(cookieParser());
+const passportConfig_1 = __importDefault(require("./services/passportConfig"));
+app.use(passportConfig_1.default.initialize());
 //database connection
 require("./database/connection");
 //import admin seeder
