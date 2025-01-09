@@ -21,7 +21,7 @@ sequelize.authenticate()
         console.log("Database Error: " + err);
     });
 
-sequelize.sync({ force: true })
+sequelize.sync({ force: false })
     .then(() => {
         console.log("Database synced");
     });

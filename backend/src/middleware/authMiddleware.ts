@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import User from '../database/models/userModel';
 import { AuthRequest, Role } from '../types/authRequest';
 // promissify
-const { promisify } = require('util');+
+const { promisify } = require('util');
 
 class AuthMiddleware {
     async isAuthenticated(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
@@ -58,5 +58,4 @@ class AuthMiddleware {
         };
     }
 }    
-
-export {AuthMiddleware};
+export default new AuthMiddleware();
