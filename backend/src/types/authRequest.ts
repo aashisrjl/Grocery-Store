@@ -4,7 +4,6 @@ export interface AuthRequest extends Request {
     user?: {
         id: string;
         username: string;
-        emails: string;
         email: string;
         role?: string;
         password: string;
@@ -12,7 +11,6 @@ export interface AuthRequest extends Request {
         otp?: number;
     };
 }
-
 
 export enum Role{
     Admin = 'admin',

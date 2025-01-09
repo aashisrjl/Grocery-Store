@@ -3,7 +3,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 import dotenv from "dotenv";
 
 dotenv.config();
-
+let userProfile;
 passport.use(
     new GoogleStrategy(
         {
@@ -13,13 +13,10 @@ passport.use(
             passReqToCallback: true, // Pass the entire request if needed
             session: false, // Disable sessions
         },
-        async (accessToken: string, refreshToken: string, profile: any, done:Function) => {
-            try {
+        function (request: any, accessToken: string, refreshToken: string, profile: any, done: any) {
+                userProfile = profile;
                 // Perform any custom logic with the profile (e.g., saving the user)
-                return done(null, profile); // This will pass the user profile
-            } catch (error) {
-                return done(error, null);
-            }
+                return done(null, profile); 
         }
     )
 );
@@ -31,6 +28,3 @@ passport.serializeUser((user: any, done: any) => {
 passport.deserializeUser((user: any, done: any) => {
   done(null, user); // Deserialize the user to retrieve from the session
 });
-
-export default passport;
-
