@@ -7,6 +7,7 @@ const router: Router = express.Router();
 
 router.route("/register").post(errorHandler(UserController.registerUser));
 router.route("/login").post(errorHandler(UserController.loginUser));
+router.route("/logout").post(errorHandler(UserController.logOut));
 
 // Google OAuth Login
 // router.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"],session:false }));

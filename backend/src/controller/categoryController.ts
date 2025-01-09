@@ -1,6 +1,7 @@
 import Category from "../database/models/categoryModel";
 import {Request,Response} from 'express';
 import { CategoryType } from "../types/categoryTypes";
+import { AuthRequest } from "../types/authRequest";
 
 export class CategoryController{
     categoryData=[
@@ -101,6 +102,22 @@ async updateCategory(req:Request,res:Response):Promise<void>{
     res.status(200).json({
         message:"Category updated successfully",
         updatedData
+    })
+}
+
+//get category by id
+async getCategoryById(req:Request,res:Response):Promise<void>{
+    const {id} = req.params;
+    const data = await Category.findOne({where:{id}})
+    if(!data){
+        res.status(400).json({
+            message:"Category not found"
+        })
+        return;
+    }
+    res.status(200).json({
+        message:"Category fetched successfully",
+        data
     })
 }
 

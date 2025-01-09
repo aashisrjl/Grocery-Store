@@ -1,16 +1,15 @@
-import { Request } from "express";
+
+import { Request } from 'express';
+import User from '../database/models/userModel';
+
+
 
 export interface AuthRequest extends Request {
-    user?: {
-        id: string;
-        username: string;
-        email: string;
-        role?: string;
-        password: string;
-        googleId?: string;
-        otp?: number;
-    };
+
+    user?: User;
+
 }
+
 
 export enum Role{
     Admin = 'admin',

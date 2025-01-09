@@ -1,4 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
+import User from './models/userModel';
+import Product from './models/productModel';
+import Category from './models/categoryModel';
 
 const sequelize = new Sequelize({
     database: process.env.DB_NAME || 'grocery_store',
@@ -18,18 +21,18 @@ sequelize.authenticate()
         console.log("Database Error: " + err);
     });
 
-sequelize.sync({ force: false })
+sequelize.sync({ force: true })
     .then(() => {
         console.log("Database synced");
     });
 
     ////////////////////// relationship //////////////////////////////////////
     // user and product
-    // User.hasMany(Product,{foreignKey: 'userId'});
-    // Product.belongsTo(User,{foreignKey:'userId'});
+    User.hasMany(Product,{foreignKey: 'userId'});
+    Product.belongsTo(User,{foreignKey:'userId'});
     // //product and category
-    // Category.hasOne(Product,{foreignKey: 'categoryId'});
-    // Product.belongsTo(Category,{foreignKey:'categoryId'});
+    Category.hasOne(Product,{foreignKey: 'categoryId'});
+    Product.belongsTo(Category,{foreignKey:'categoryId'});
 
     // // product cart relation
     // Product.hasMany(Cart,{foreignKey: "productId"});

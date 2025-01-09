@@ -1,78 +1,62 @@
-
-import {NextFunction, Request,Response} from 'express';
+import express,{ NextFunction, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../database/models/userModel';
 import { AuthRequest, Role } from '../types/authRequest';
+// promissify
+const { promisify } = require('util');+
 
-
-
-class authMiddleware {
-    async isAuthenticated(req:any,res:Response,next:NextFunction):Promise<void>{
-        // get token from user
+class AuthMiddleware {
+    async isAuthenticated(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
         const token = req.headers.authorization;
-        if(!token || token === undefined || token === null){
+
+        if (!token) {
+             res.status(403).json({ message: "Token not provided" })
+             return;
+        }
+
+        try {
+            const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET as string);
+
+            // Fetch user data from the database
+            const userData = await User.findByPk(Number(decoded.id));
+
+            if (!userData) {
+                res.status(404).json({ message: "No user found with that token" })
+                return ;
+            }
+
+            // Attach user data to the request object
+            req.user = userData;
+            // req.user = {
+            //     id: userData.id,
+            //     username: userData.username,
+            //     email: userData.email,
+            //     role: userData.role,
+            //     password: userData.password,
+            //     googleId: userData.googleId,
+            //     otp: userData.otp,
+            // };
+
+            next();
+        } catch (err:any) {
             res.status(403).json({
-                message:"token not provided"
-            })
-            return;
+                message: "Invalid token",
+                error: err.message,
+            });
         }
-        //verify token
-        jwt.verify(token,process.env.JWT_SECRET as string,async(err:any,decoded:any)=>{
-            if(err){
-                res.status(403).json({
-                    message:"token not valid"
-                    })
-            }else{
-             try {
-                   // check if that decoded object id user exist or not 
-               const userData =  await User.findByPk(decoded.id);
-               if(!userData){
-                res.status(404).json({
-                    message:"no user with that token"
-                    })
-                    return;
-               }
-               req.user= {
-                id: userData.id,
-                username: userData.username,
-                email: userData.email,
-                role: userData.role,
-                password: userData.password,
-                googleId: userData.googleId,
-                otp: userData.otp,
-            };
-               next()
-                
-             } catch (error) {
-                res.status(500).json({
-                    message:"server/internal error",
-                    error: error
-                })
-             }
-            }
-
-        })
-
-
-
-        //next
-    }
-    restrictTo(...roles:Role[]){
-        return (req:AuthRequest,res:Response,next:NextFunction)=>{
-            let userRole = req.user?.role as Role;
-
-            if(!roles.includes(userRole)){
-                res.status(403).json({
-                    message: "you don't have permission"
-                })
-            }else{
-                next()
-            }
-           
-        }
-
     }
 
-}
+    restrictTo(...roles: Role[]) {
+        return (req: AuthRequest, res: express.Response, next: express.NextFunction) => {
+            const userRole = req.user?.role as Role;
+    
+            if (!roles.includes(userRole)) {
+                return res.status(403).json({ message: "You don't have permission" });
+            }
+    
+            next();
+        };
+    }
+}    
 
-export default new authMiddleware()
+export {AuthMiddleware};

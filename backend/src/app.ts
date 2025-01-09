@@ -25,12 +25,10 @@ app.get("/",(req:Request,res:Response)=>{
 })
 
 import userRoute from './routes/userRoute'
+import categoryRoute from './routes/categoryRoute'
 
 app.use("", userRoute)
-console.log("clientID",process.env.O_CLIENT_ID)
-console.log("clientSecret",process.env.O_CLIENT_SECRET)
-console.log("callbackURL",process.env.O_CALLBACK_URL)
-console.log("jwttoken",process.env.JWT_SECRET)
+app.use("", categoryRoute)
 
 
 // // google login ===============================================

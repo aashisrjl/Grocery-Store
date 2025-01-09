@@ -76,6 +76,12 @@ class UserController {
             })
 
     }
+    public static async logOut(req: Request, res: Response): Promise<void> {
+        res.clearCookie("token");
+        res.status(200).json({
+            message: "Logout success",
+        });
+        }
 
     // public static async googleCallback(req: any, res: Response): Promise<void> {
     //     // Check if `req.user` is undefined
